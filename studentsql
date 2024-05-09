@@ -1,1 +1,75 @@
+-- Table structure for table `attendence`
+CREATE TABLE IF NOT EXISTS `attendence` (
+  `aid` int(11) NOT NULL AUTO_INCREMENT,
+  `rollno` varchar(20) NOT NULL,
+  `attendance` int(100) NOT NULL,
+  PRIMARY KEY (`aid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table structure for table `department`
+CREATE TABLE IF NOT EXISTS `department` (
+  `cid` int(11) NOT NULL AUTO_INCREMENT,
+  `branch` varchar(50) NOT NULL,
+  PRIMARY KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table structure for table `student`
+CREATE TABLE IF NOT EXISTS `student` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rollno` varchar(20) NOT NULL,
+  `sname` varchar(50) NOT NULL,
+  `sem` int(20) NOT NULL,
+  `gender` varchar(50) NOT NULL,
+  `branch` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `number` varchar(12) NOT NULL,
+  `address` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table structure for table `test`
+CREATE TABLE IF NOT EXISTS `test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(52) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table structure for table `trig`
+CREATE TABLE IF NOT EXISTS `trig` (
+  `tid` int(11) NOT NULL AUTO_INCREMENT,
+  `rollno` varchar(50) NOT NULL,
+  `action` varchar(50) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table structure for table `user`
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Triggers
+DELIMITER $$
+
+CREATE TRIGGER `DELETE_student_trigger` BEFORE DELETE ON `student` FOR EACH ROW
+BEGIN
+    INSERT INTO trig (rollno, action, timestamp) VALUES (OLD.rollno, 'STUDENT DELETED', NOW());
+END$$
+
+CREATE TRIGGER `INSERT_student_trigger` AFTER INSERT ON `student` FOR EACH ROW
+BEGIN
+    INSERT INTO trig (rollno, action, timestamp) VALUES (NEW.rollno, 'STUDENT INSERTED', NOW());
+END$$
+
+CREATE TRIGGER `UPDATE_student_trigger` AFTER UPDATE ON `student` FOR EACH ROW
+BEGIN
+    INSERT INTO trig (rollno, action, timestamp) VALUES (NEW.rollno, 'STUDENT UPDATED', NOW());
+END$$
+
+DELIMITER ;
 
