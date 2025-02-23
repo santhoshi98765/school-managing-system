@@ -58,6 +58,10 @@ def index():
 def student_details():
     students = Student.query.all() 
     return render_template('student_details.html', students=students)
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
 
 # Other routes follow similarly
 
